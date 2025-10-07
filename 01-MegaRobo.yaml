@@ -7,7 +7,7 @@
     zone_id: Z0212707MY585LOOEFGA
     domain: kriiishmatic.fun
     aws_region: us-east-1
-    instance_name: 
+    instances: 
     - mongod
 
   tasks:
