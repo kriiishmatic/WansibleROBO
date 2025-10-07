@@ -8,17 +8,20 @@
     domain: kriiishmatic.fun
     instance_name: mysql
     aws_region: us-east-1
+
   tasks:
     - name: Launch EC2 instance
-  amazon.aws.ec2_instance:
-    name: "{{ instance_name }}"
-    image_id: "{{ ami_id }}"
-    security_group_ids:
-      - "{{ sg_id }}"   # ✅ use security_group_ids instead of security_groups
-    region: "{{ aws_region }}"
-    tags:
-      Environment: Development
-      ManagedBy: Ansible
-    wait: yes              # Wait for the instance to be in a running state
-    assign_public_ip: yes  # Assign a public IP address
-    register: ec2_info
+      amazon.aws.ec2_instance:
+        name: "{{ instance_name }}"
+        image_id: "{{ ami_id }}"
+        instance_type: t2.micro
+        key_name: my-keypair              # Optional but usually required
+        security_group_ids:
+          - "{{ sg_id }}"
+        region: "{{ aws_region }}"
+        tags:
+          Environment: Development
+          ManagedBy: Ansible
+        wait: yes
+        assign_public_ip: yes
+      register: ec2_info
