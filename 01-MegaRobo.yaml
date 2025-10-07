@@ -31,7 +31,7 @@
         msg: "{{ item.instances[0].public_ip_address }}"
       loop: "{{ ec2_info.results }}"
 
-    - name: Private Ip search in ouptput
+    - name: Private IP search in output
       ansible.builtin.debug:
         msg: "{{ item.instances[0].private_ip_address }}"
       loop: "{{ ec2_info.results }}"
