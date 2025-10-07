@@ -24,4 +24,4 @@
 
     - name: Reading output
       ansible.builtin.debug:
-        msg: " Instance OP :: {{ ec2_info }}"
+        msg: "{{ ec2_info }}"
