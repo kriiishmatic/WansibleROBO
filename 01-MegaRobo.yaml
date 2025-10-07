@@ -28,10 +28,10 @@
   
     - name: Public searching in the output
       ansible.builtin.debug:
-      msg: "{{ item.instances[0].public_ip_address }}"
+        msg: "{{ item.instances[0].public_ip_address }}"
       loop: "{ ec2_info.results }}"
 
     - name: Private Ip search in ouptput
       ansible.builtin.debug:
-      msg: "{{ item.instances[0].private_ip_address }}"
+        msg: "{{ item.instances[0].private_ip_address }}"
       loop: "{{ ec2_info.results }}"
