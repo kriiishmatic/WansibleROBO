@@ -18,10 +18,10 @@
         instance_type: t3.micro
         security_group_ids: "{{ sg_id }}"
         tags:
-         name : {{ item }}
-         loop: {{ instance_name }}
+         name : "{{ item }}"
+         loop: "{{ instance_name }}"
       register: ec2_info
-      
+
     - name: Reading output
       ansible.builtin.debug:
         msg: " Instance OP :: {{ ec2_info }}"
