@@ -1,0 +1,24 @@
+- name: ROBOSIBLE
+  hosts: local
+  connection: local
+  vars:
+    ami_id: ami-09c813fb71547fc4f
+    sg_id: sg-05e5bd14656ebdaf3
+    zone_id: Z0212707MY585LOOEFGA
+    domain: kriiishmatic.fun
+    instance_name: mysql
+    aws_region: us-east-1
+  tasks:
+    - name: Launch EC2 instance
+  amazon.aws.ec2_instance:
+    name: "{{ instance_name }}"
+    image_id: "{{ ami_id }}"
+    security_group_ids:
+      - "{{ sg_id }}"   # ✅ use security_group_ids instead of security_groups
+    region: "{{ aws_region }}"
+    tags:
+      Environment: Development
+      ManagedBy: Ansible
+    wait: yes              # Wait for the instance to be in a running state
+    assign_public_ip: yes  # Assign a public IP address
+    register: ec2_info
