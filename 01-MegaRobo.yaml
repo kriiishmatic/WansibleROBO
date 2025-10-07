@@ -19,7 +19,7 @@
         security_group_ids: "{{ sg_id }}"
         tags:
          name : "{{ item }}"
-         loop: "{{ instance_name }}"
+      loop: "{{ instance_name }}"
       register: ec2_info
 
     - name: Reading output
