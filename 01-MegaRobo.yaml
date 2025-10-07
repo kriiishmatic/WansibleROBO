@@ -25,3 +25,13 @@
     - name: Reading output
       ansible.builtin.debug:
         msg: "{{ ec2_info }}"
+  
+    - name: Public searching in the output
+      anisble.builtin.debug:
+      msg: "{{ item.instances[0].public_ip_address }}""
+      loop: "{ ec2_info.results }}"
+
+    - name: Private Ip search in ouptput
+      anisble.builtin.debug:
+      msg: "{{ item.instances[0].private_ip_address }}""
+      loop: "{ ec2_info.results }}"
