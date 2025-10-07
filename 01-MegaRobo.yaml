@@ -14,8 +14,7 @@
       amazon.aws.ec2_instance:
         name: "{{ instance_name }}"
         image_id: "{{ ami_id }}"
-        instance_type: t2.micro
-        key_name: my-keypair              # Optional but usually required
+        instance_type: t3.micro
         security_group_ids:
           - "{{ sg_id }}"
         region: "{{ aws_region }}"
