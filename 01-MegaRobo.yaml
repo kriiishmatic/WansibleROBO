@@ -7,7 +7,7 @@
     zone_id: "Z0212707MY585LOOEFGA" # replace with your ID
     domain_name: "kriiishmatic.fun"
     instances: 
-    - mongodb
+    - mongod
     # - redis
     # - mysql
     # - rabbitmq
