@@ -48,8 +48,8 @@
       
     - name: Copy mongod repo
       ansible.builtin.copy:
-      src: mongo.repo
-      dest: /etc/yum.repos.d/mongo.repo
+        src: mongo.repo
+        dest: /etc/yum.repos.d/mongo.repo
 
     - name: Installing mongodb
       ansible.builtin.package:
@@ -63,5 +63,5 @@
     
     - name: print ouput
       ansible.builtin.debug:
-      msg: " {{ catalogue_output }}"
+        msg: " {{ catalogue_output }}"
       
