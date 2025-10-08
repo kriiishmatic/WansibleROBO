@@ -36,3 +36,32 @@
         src: /tmp/catalogue.zip
         dest: /app
         remote_src: yes
+    
+    - name: Installing dependencies
+      community.general.npm:
+        path: /app
+      
+    - name: copying service
+      ansible.builtin.copy:
+        src: catalogue.service
+        dest: /etc/systemd/system/catalogue.service
+      
+    - name: Copy mongod repo
+      ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+    - name: Installing mongodb
+      ansible.builtin.package:
+        name: mongodb-mongosh
+        state: present
+     ### we need to check first we have data in DB or not
+   
+    - name: Checking DB for master data
+      ansible.builtin.command: mongosh mongodb.kriiishmatic.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+      register: catalogue_output
+    
+    - name: print ouput
+      ansible.builtin.debug:
+      msg: " {{ catalogue_output }}"
+      
