@@ -64,7 +64,7 @@
 
     - name: Copy service files
       ansible.builtin.copy:
-        src: /tmp/shipping.zip
+        src: shipping.service
         dest: /etc/systemd/system/shipping.service
 
     - name: Import data from app to mysql
