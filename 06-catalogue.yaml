@@ -68,4 +68,9 @@
     - name: Load master data with condition after reading output
       ansible.builtin.shell: mongosh --host mongodb.kriiishmatic.fun </app/db/master-data.js
       when : catalogue_output.stdout | int < 0
-      
+       
+    - name: Start the service
+      ansible.builtin.service:
+        name: catalogue
+        state: started
+        enabled: yes
