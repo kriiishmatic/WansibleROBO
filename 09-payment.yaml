@@ -36,8 +36,8 @@
   
   - name: Dowloading url code
     ansible.builtin.url:
-    url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
-    path: /tmp/payment.zip
+      url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
+      path: /tmp/payment.zip
 
   - name: unzip it to /app
     ansible.builtin.unarchive:
@@ -58,10 +58,10 @@
 
   - name: Start and enable
     ansible.builtin.service:
-    name: payment
-    state: started
-    enabled: true
-    daemon_reload: true
+      name: payment
+      state: started
+      enabled: true
+      daemon_reload: true
 
 
 
