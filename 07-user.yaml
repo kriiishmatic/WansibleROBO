@@ -1,5 +1,5 @@
-- name: Installing catalogue and loading mysql data base with Master data
-  hosts: catalogue
+- name: Installing user and loading mysql data base with Master data
+  hosts: user
   become: yes
   tasks:
     - name: Disabing nodejs
@@ -21,7 +21,7 @@
         home: /app
         shell: /sbin/nologin
 
-    - name: Delete directory
+    - name: Delete directory to make sure its doesnt 
       ansible.builtin.file:
         path: /app
         state: absent
@@ -33,17 +33,17 @@
 
     - name: Delete previous code if at all it exits
       ansible.builtin.file:
-        path: /tmp/catalogue.zip
+        path: /tmp/user.zip
         state: absent
 
     - name: Dowload application with url
       ansible.builtin.get_url:
-        url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
-        dest: /tmp/catalogue.zip
+        url: https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
+        dest: /tmp/user.zip
 
     - name: Unzip code
       ansible.builtin.unarchive:
-        src: /tmp/catalogue.zip
+        src: /tmp/user.zip
         dest: /app
         remote_src: yes
     
@@ -53,35 +53,13 @@
       
     - name: copying service
       ansible.builtin.copy:
-        src: catalogue.service
-        dest: /etc/systemd/system/catalogue.service
+        src: user.service
+        dest: /etc/systemd/system/user.service
       
-    - name: Copy mongod repo
-      ansible.builtin.copy:
-        src: mongo.repo
-        dest: /etc/yum.repos.d/mongo.repo
-
-    - name: Installing mongodb
-      ansible.builtin.package:
-        name: mongodb-mongosh
-        state: present
-     ### we need to check first we have data in DB or not
-   
-    - name: Checking DB for master data
-      ansible.builtin.command: mongosh mongodb.kriiishmatic.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
-      register: catalogue_output
-    
-    # - name: print ouput
-    #   ansible.builtin.debug:
-    #     msg: " {{ catalogue_output }}"
-    
-    - name: Load master data with condition after reading output
-      ansible.builtin.shell: mongosh --host mongodb.kriiishmatic.fun </app/db/master-data.js
-      when : catalogue_output.stdout | int < 0
-       
+  
     - name: Start the service
       ansible.builtin.service:
-        name: catalogue
+        name: user
         state: started
         enabled: yes
         daemon_reload: true
