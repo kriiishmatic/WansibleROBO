@@ -1,0 +1,2 @@
+- name: isnaliing python and dependencies in Payment server
+  hosts: payment

@@ -6,10 +6,10 @@
     sg_id: sg-05e5bd14656ebdaf3 # replace with your SG ID
     zone_id: "Z0212707MY585LOOEFGA" # replace with your ID
     domain_name: "kriiishmatic.fun"
-    # instances: 
-    # - redis
-    # - mysql
-    # - rabbitmq
+    instances: 
+    - payment
+    - shipping
+    
   tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
