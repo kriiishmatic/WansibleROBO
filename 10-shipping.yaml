@@ -69,7 +69,7 @@
 
     - name: Import data from app to mysql
       community.mysql.mysql_db:
-        name: mysql
+        name: all
         state: import
         login_host: mysql.kriiishmatic.fun
         login_user: root
