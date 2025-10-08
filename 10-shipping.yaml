@@ -1,0 +1,88 @@
+- name: Shipping maven
+  hosts: shipping
+  become: yes
+  tasks:
+    - name: Installing maven and mysql
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop:
+      - maven
+      - mysql
+
+    - name: install mysql python libraries
+      ansible.builtin.pip:
+        executable: pip3.9
+        name: "{{ item }}"
+      loop:
+      - cryptography
+      - PyMySQL
+    
+    - name: adding user to shipping
+      ansible.builtin.user:
+        name: roboshop
+        comment: System user
+        home: /app
+        shell: /sbin/nologin
+        system: true
+    
+    - name: Making sure no app directory exists
+      ansible.builtin.file:
+        path: /app
+        state: absent
+
+    - name: make directory
+      ansible.builtin.file:
+        path: /app
+        state: directory
+
+    - name: Delete previous zip file or dowloaded one
+      ansible.builtin.file:
+        path: /tmp/shipping.zip
+        state: absent
+
+    - name: Dowloading url code
+      ansible.builtin.get_url:
+        url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
+        dest: /tmp/shipping.zip
+
+    - name: unzip it to /app
+      ansible.builtin.unarchive:
+        src: /tmp/shipping.zip
+        dest: /app
+        remote_src: yes
+
+    - name: Installing maven dependencies
+      ansible.builtin.command: mvn clean package
+      args:
+        chdir: /app
+
+    - name: Moving .jar file
+      ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar
+      args:
+      chdir: /app
+
+    - name: Copy service files
+      ansible.builtin.copy:
+        src: /tmp/shipping.zip
+        dest: /etc/systemd/system/shipping.service
+
+    - name: Import data from app to mysql
+      community.mysql.mysql_db:
+        name: mysql
+        state: import
+        login_host: mysql.kriiishmatic.fun
+        login_user: root
+        login_password: RoboShop@1
+        target: "{{ item }}"
+      loop:
+      - /app/db/schema.sql
+      - /app/db/schema.sql
+      - /app/db/master-data.sql
+
+    - name: daemon reload enable and start
+      ansible.builtin.systemd_service:
+        name: shipping
+        enabled: true
+        state: started
+        daemon_reload: true
