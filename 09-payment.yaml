@@ -35,7 +35,7 @@
       state: absent
   
   - name: Dowloading url code
-    ansible.builtin.url:
+    ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
       path: /tmp/payment.zip
 
